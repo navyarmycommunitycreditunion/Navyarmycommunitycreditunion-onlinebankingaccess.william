@@ -1,0 +1,1334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bank Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f2f5;
+            margin: 0;
+            padding: 0;
+        }
+
+        .dashboard-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .header h1 {
+            font-size: 2rem;
+            color: #333;
+        }
+
+        .header button {
+            padding: 0.75rem 1.5rem;
+            background-color: #0f4b8f;
+            border: none;
+            border-radius: 4px;
+            color: #fff;
+            font-size: 1rem;
+            cursor: pointer;
+        }
+
+        .header button:hover {
+            background-color: #0056b3;
+        }
+
+        .balance {
+            background-color: #fff;
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .balance h2 {
+            font-size: 1.5rem;
+            color: #333;
+        }
+
+        .balance p {
+            font-size: 2rem;
+            color: #007bff;
+        }
+
+        .transactions {
+            background-color: #fff;
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
+        }
+
+        .transactions h2 {
+            font-size: 1.5rem;
+            color: #333;
+            margin-bottom: 1rem;
+        }
+
+        .transactions table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .transactions table, .transactions th, .transactions td {
+            border: 1px solid #ddd;
+        }
+
+        .transactions th, .transactions td {
+            padding: 0.75rem;
+            text-align: left;
+        }
+
+        .transactions th {
+            background-color: #f8f9fa;
+        }
+
+        .transactions tbody tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        .additional-features {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+        }
+
+        .feature {
+            background-color: #fff;
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            width: 48%;
+            margin-bottom: 2rem;
+        }
+
+        .feature h3 {
+            font-size: 1.25rem;
+            color: #333;
+            margin-bottom: 1rem;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none; 
+            position: fixed; 
+            z-index: 1; 
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto; 
+            background-color: rgb(0,0,0); 
+            background-color: rgba(0,0,0,0.4); 
+        }
+
+        .modal-content {
+            background-color: #fff;
+            margin: 15% auto; 
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%; 
+            max-width: 500px;
+            border-radius: 8px;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .withdrawal-form input[type="text"],
+        .withdrawal-form input[type="number"] {
+            width: 100%;
+            padding: 0.75rem;
+            margin-bottom: 1rem;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        .withdrawal-form button {
+            width: 100%;
+            padding: 0.75rem;
+            background-color: #007bff;
+            border: none;
+            border-radius: 4px;
+            color: #fff;
+            font-size: 1rem;
+            cursor: pointer;
+        }
+
+        .withdrawal-form button:hover {
+            background-color: #0056b3;
+        }
+
+        .error-message {
+            color: red;
+            text-align: center;
+            margin-top: 1rem;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="dashboard-container">
+        <div class="header">
+             <img src="img/ANFCU_logo.png" alt="Logo Description" width="350" height="150">
+            <h1></h1>
+            <a href="index.html"><button>Logout</button></a>
+        </div>
+        <div class="balance">
+            <div>
+                <h2>Available Balance</h2>
+                <p>$320,329,700.00</p>
+            </div>
+            <button id="withdraw-button">Withdraw</button>
+        </div>
+   <div class="transactions">
+    <h2>Recent Transactions</h2>
+    <table>
+        <thead>
+
+
+                <div class="container">
+        <h1>Transaction Records</h1>
+        <table>
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Type</th>
+                    <th>Description</th>
+                    <th>Amount (USD)</th>
+                    <th>Location</th>
+                    <th>Remitting Entity / Source</th>
+                </tr>
+            </thead>
+            <tbody>
+                 <tr>
+                    <td>2023-01-05</td>
+                    <td>Income</td>
+                    <td>Salary for movie The Gray Man"</td>
+                    <td>+ $20,000,000</td>
+                    <td>Los Angeles, CA</td>
+                    <td>Warner Bros.</td>
+                </tr>
+                <tr>
+                    <td>2023-01-10</td>
+                    <td>Expense</td>
+                    <td>Travel expenses for movie promotion</td>
+                    <td>- $15,000</td>
+                    <td>New York, NY</td>
+                    <td>Delta Airlines</td>
+                </tr>
+                <tr>
+                    <td>2023-01-15</td>
+                    <td>Income</td>
+                    <td>Endorsement deal with luxury watch brand</td>
+                    <td>+ $500,000</td>
+                    <td>Paris, France</td>
+                    <td>Rolex</td>
+                </tr>
+                <tr>
+                    <td>2023-01-20</td>
+                    <td>Expense</td>
+                    <td>Agent commission for endorsement</td>
+                    <td>- $50,000</td>
+                    <td>Los Angeles, CA</td>
+                    <td>Creative Artists Agency</td>
+                </tr>
+                <tr>
+                    <td>2023-01-25</td>
+                    <td>Income</td>
+                    <td>Royalties for TV show appearance</td>
+                    <td>+ $200,000</td>
+                    <td>Los Angeles, CA</td>
+                    <td>HBO</td>
+                </tr>
+                <tr>
+                    <td>2023-01-30</td>
+                    <td>Expense</td>
+                    <td>Charitable donation to children's hospital</td>
+                    <td>- $100,000</td>
+                    <td>Los Angeles, CA</td>
+                    <td>St. Jude's Hospital</td>
+                </tr>
+                <tr>
+                    <td>2023-02-05</td>
+                    <td>Income</td>
+                    <td>Appearance fee at film festival</td>
+                    <td>+ $300,000</td>
+                    <td>Sundance, UT</td>
+                    <td>Sundance Film Festival</td>
+                </tr>
+                <tr>
+                    <td>2023-02-10</td>
+                    <td>Expense</td>
+                    <td>Marketing expenses for film release</td>
+                    <td>- $250,000</td>
+                    <td>Los Angeles, CA</td>
+                    <td>Marketing Agency</td>
+                </tr>
+                <tr>
+                    <td>2023-02-15</td>
+                    <td>Income</td>
+                    <td>Royalties for past movie streaming</td>
+                    <td>+ $150,000</td>
+                    <td>Los Angeles, CA</td>
+                    <td>Netflix</td>
+                </tr>
+                <tr>
+                    <td>2023-02-20</td>
+                    <td>Expense</td>
+                    <td>Legal fees for new contract negotiation</td>
+                    <td>- $30,000</td>
+                    <td>Los Angeles, CA</td>
+                    <td>Law Firm</td>
+                </tr>
+                <tr>
+                    <td>2023-02-25</td>
+                    <td>Income</td>
+                    <td>Commercial appearance for car brand</td>
+                    <td>+ $1,000,000</td>
+                    <td>Detroit, MI</td>
+                    <td>Ford</td>
+                </tr>
+                <tr>
+                    <td>2023-03-01</td>
+                    <td>Expense</td>
+                    <td>Production costs for Formula 1 Project" (TBA) project</td>
+                    <td>- $500,000</td>
+                    <td>Los Angeles, CA</td>
+                    <td>Production Studio</td>
+                </tr>
+                <tr>
+                    <td>2023-03-05</td>
+                    <td>Income</td>
+                    <td>Royalties for book adaptation rights</td>
+                    <td>+ $2,000,000</td>
+                    <td>Los Angeles, CA</td>
+                    <td>Random House</td>
+                </tr>
+                <tr>
+                    <td>2023-03-10</td>
+                    <td>Expense</td>
+                    <td>Wardrobe expenses for movie premiere</td>
+                    <td>- $75,000</td>
+                    <td>Los Angeles, CA</td>
+                    <td>Fashion Designer</td>
+                </tr>
+                <tr>
+                    <td>2023-03-15</td>
+                    <td>Income</td>
+                    <td>Royalties for streaming service</td>
+                    <td>+ $100,000</td>
+                    <td>Los Angeles, CA</td>
+                    <td>Amazon Prime</td>
+                </tr>
+                <tr>
+                    <td>2023-03-20</td>
+                    <td>Expense</td>
+                    <td>Travel expenses for charity event</td>
+                    <td>- $20,000</td>
+                    <td>London, UK</td>
+                    <td>British Airways</td>
+                </tr>
+                <tr>
+                    <td>2023-03-25</td>
+                    <td>Income</td>
+                    <td>Appearance fee at charity event</td>
+                    <td>+ $250,000</td>
+                    <td>London, UK</td>
+                    <td>Red Cross</td>
+                </tr>
+                <tr>
+                    <td>2023-03-30</td>
+                    <td>Expense</td>
+                    <td>Publicist fee for managing media</td>
+                    <td>- $40,000</td>
+                    <td>Los Angeles, CA</td>
+                    <td>PR Agency</td>
+                </tr>
+                <tr>
+                    <td>2023-04-05</td>
+                    <td>Income</td>
+                    <td>Salary for TV series "Caine Five"</td>
+                    <td>+ $20,500,000</td>
+                    <td>Los Angeles, CA</td>
+                    <td>ABC</td>
+                </tr>
+                <tr>
+                    <td>2023-04-10</td>
+                    <td>Expense</td>
+                    <td>Agent commission for TV series</td>
+                    <td>- $250,000</td>
+                    <td>Los Angeles, CA</td>
+                    <td>Creative Artists Agency</td>
+                </tr>
+                <tr>
+                    <td>2023-04-15</td>
+                    <td>Income</td>
+                    <td>Royalties for audiobook narration</td>
+                    <td>+ $50,000</td>
+                    <td>New York, NY</td>
+                    <td>Audible</td>
+                </tr>
+                <tr>
+                    <td>2023-04-20</td>
+                    <td>Expense</td>
+                    <td>Legal fees for contract dispute</td>
+                    <td>- $100,000</td>
+                    <td>Los Angeles, CA</td>
+                    <td>Law Firm</td>
+                </tr>
+                <tr>
+                    <td>2023-04-25</td>
+                    <td>Income</td>
+                    <td>Royalties for video game voice-over</td>
+                    <td>+ $150,000</td>
+                    <td>San Francisco, CA</td>
+                    <td>Electronic Arts</td>
+                </tr>
+                <tr>
+                    <td>2023-04-30</td>
+                    <td>Expense</td>
+                    <td>Charitable donation to wildlife foundation</td>
+                    <td>- $200,000</td>
+                    <td>Kenya</td>
+                    <td>WWF</td>
+                </tr>
+                <tr>
+                    <td>2023-05-05</td>
+                    <td>Income</td>
+                    <td>Appearance fee on talk show</td>
+                    <td>+ $100,000</td>
+                    <td>New York, NY</td>
+                    <td>The Tonight Show</td>
+                </tr>
+                <tr>
+                    <td>2023-05-10</td>
+                    <td>Expense</td>
+                    <td>Travel expenses for press tour</td>
+                    <td>- $50,000</td>
+                    <td>Los Angeles, CA</td>
+                    <td>American Airlines</td>
+                </tr>
+                <tr>
+                    <td>2023-05-15</td>
+                    <td>Income</td>
+                    <td>Royalties for Interview with the Vampire (1994) series reruns</td>
+                    <td>+ $75,000</td>
+                    <td>Los Angeles, CA</td>
+                    <td>HBO</td>
+                </tr>
+                <tr>
+                    <td>2023-05-20</td>
+                    <td>Expense</td>
+                    <td>Marketing expenses for new project</td>
+                    <td>- $300,000</td>
+                    <td>Los Angeles, CA</td>
+                    <td>Marketing Agency</td>
+                </tr>
+                <tr>
+                    <td>2023-05-25</td>
+                    <td>Income</td>
+                    <td>Royalties for "12 Years a Slave" streaming service</td>
+                    <td>+ $200,000</td>
+                    <td>Los Angeles, CA</td>
+                    <td>Netflix</td>
+                </tr>
+                <tr>
+                    <td>2023-05-30</td>
+                    <td>Expense</td>
+                    <td>Agent commission for royalties</td>
+                    <td>- $20,000</td>
+                    <td>Los Angeles, CA</td>
+                    <td>Creative Artists Agency</td>
+                </tr>
+                <tr>
+                    <td>2023-06-05</td>
+                    <td>Income</td>
+                    <td>Salary for movie "Future Quest"</td>
+                    <td>+ $20,000,000</td>
+                    <td>Los Angeles, CA</td>
+                    <td>Universal Pictures</td>
+                </tr>
+                <tr>
+                    <td>2023-06-10</td>
+                    <td>Expense</td>
+                    <td>Travel expenses for "Formula 1 Project" movie shoot</td>
+                    <td>- $30,000</td>
+                    <td>Vancouver, Canada</td>
+                    <td>Air Canada</td>
+                </tr>
+                <tr>
+                    <td>2023-06-15</td>
+                    <td>Income</td>
+                    <td>Endorsement deal with tech company</td>
+                    <td>+ $750,000</td>
+                    <td>San Francisco, CA</td>
+                    <td>Apple</td>
+                </tr>
+                <tr>
+                    <td>2023-06-20</td>
+                    <td>Expense</td>
+                    <td>Agent commission for endorsement</td>
+                    <td>- $75,000</td>
+                    <td>Los Angeles, CA</td>
+                    <td>Creative Artists Agency</td>
+                </tr>
+                <tr>
+                    <td>2023-06-25</td>
+                    <td>Income</td>
+                    <td>Royalties for "By the Sea (2015) series reruns</td>
+                    <td>+ $100,000,000</td>
+                    <td>Los Angeles, CA</td>
+                    <td>Netflix</td>
+                </tr>
+                <tr>
+                    <td>2023-06-30</td>
+                    <td>Expense</td>
+                    <td>Charitable donation to education fund</td>
+                    <td>- $50,000</td>
+                    <td>Boston, MA</td>
+                    <td>Harvard University</td>
+                </tr>
+                <tr>
+                    <td>2023-07-05</td>
+                    <td>Income</td>
+                    <td>Appearance fee at comic convention</td>
+                    <td>+ $300,000</td>
+                    <td>San Diego, CA</td>
+                    <td>Comic-Con</td>
+                </tr>
+                <tr>
+                    <td>2023-07-10</td>
+                    <td>Expense</td>
+                    <td>Marketing expenses for movie release</td>
+                    <td>- $400,000</td>
+                    <td>Los Angeles, CA</td>
+                    <td>Marketing Agency</td>
+                </tr>
+                <tr>
+                    <td>2023-07-15</td>
+                    <td>Income</td>
+                    <td>Royalties for "The Curious Case of Benjamin Button (2008)" streaming service</td>
+                    <td>+ $250,000</td>
+                    <td>Los Angeles, CA</td>
+                    <td>Amazon Prime</td>
+                </tr>
+                <tr>
+                    <td>2023-07-20</td>
+                    <td>Expense</td>
+                    <td>Travel expenses for movie promotion</td>
+                    <td>- $35,000</td>
+                    <td>Paris, France</td>
+                    <td>Air France</td>
+                </tr>
+                <tr>
+                    <td>2023-07-25</td>
+                    <td>Income</td>
+                    <td>Royalties for past movie streaming</td>
+                    <td>+ $150,000</td>
+                    <td>Los Angeles, CA</td>
+                    <td>Hulu</td>
+                </tr>
+                <tr>
+                    <td>2023-07-30</td>
+                    <td>Expense</td>
+                    <td>Legal fees for new contract</td>
+                    <td>- $60,000</td>
+                    <td>Los Angeles, CA</td>
+                    <td>Law Firm</td>
+                </tr>
+                <tr>
+                    <td>2023-08-05</td>
+                    <td>Income</td>
+                    <td>Endorsement deal Partnering with car manufacturers such as BMW, Audi, & Tesla.</td>
+                    <td>+ $1,000,000</td>
+                    <td>Milan, Italy</td>
+                    <td>Gucci</td>
+                </tr>
+                <tr>
+                    <td>2023-08-10</td>
+                    <td>Expense</td>
+                    <td>Agent commission for endorsement</td>
+                    <td>- $100,000</td>
+                    <td>Los Angeles, CA</td>
+                    <td>Creative Artists Agency</td>
+                </tr>
+                <tr>
+                    <td>2023-08-15</td>
+                    <td>Income</td>
+                    <td>Royalties for "Babylon" TV series reruns</td>
+                    <td>+ $200,000</td>
+                    <td>Los Angeles, CA</td>
+                    <td>HBO</td>
+                </tr>
+                <tr>
+                    <td>2023-08-20</td>
+                    <td>Expense</td>
+                    <td>Travel expenses for charity event</td>
+                    <td>- $20,000</td>
+                    <td>Tokyo, Japan</td>
+                    <td>Japan Airlines</td>
+                </tr>
+                <tr>
+                    <td>2023-08-25</td>
+                    <td>Income</td>
+                    <td>Appearance fee at charity event</td>
+                    <td>+ $250,000</td>
+                    <td>Tokyo, Japan</td>
+                    <td>Red Cross</td>
+                </tr>
+                <tr>
+                    <td>2023-08-30</td>
+                    <td>Expense</td>
+                    <td>Publicist fee for managing media</td>
+                    <td>- $40,000</td>
+                    <td>Los Angeles, CA</td>
+                    <td>PR Agency</td>
+                </tr>
+                <tr>
+                    <td>2023-09-05</td>
+                    <td>Income</td>
+                    <td>Salary for movie ""Caine Five""</td>
+                    <td>+ $20,000,000</td>
+                    <td>Los Angeles, CA</td>
+                    <td>20th Century Studios</td>
+                </tr>
+                <tr>
+                    <td>2023-09-10</td>
+                    <td>Expense</td>
+                    <td>Travel expenses for film shoot</td>
+                    <td>- $30,000</td>
+                    <td>Prague, Czech Republic</td>
+                    <td>Lufthansa</td>
+                </tr>
+                <tr>
+                    <td>2023-09-15</td>
+                    <td>Income</td>
+                    <td>Royalties for TV series reruns</td>
+                    <td>+ $100,000</td>
+                    <td>Los Angeles, CA</td>
+                    <td>HBO</td>
+                </tr>
+                <tr>
+                    <td>2023-09-20</td>
+                    <td>Expense</td>
+                    <td>Agent commission for movie salary</td>
+                    <td>- $2,000,000</td>
+                    <td>Los Angeles, CA</td>
+                    <td>Creative Artists Agency</td>
+                </tr>
+                <tr>
+                    <td>2023-09-25</td>
+                    <td>Income</td>
+                    <td>Royalties for "A River Runs Through It (1992)" streaming service</td>
+                    <td>+ $150,000</td>
+                    <td>Los Angeles, CA</td>
+                    <td>Netflix</td>
+                </tr>
+                <tr>
+                    <td>2023-09-30</td>
+                    <td>Expense</td>
+                    <td>Charitable donation to cancer research</td>
+                    <td>- $500,000</td>
+                    <td>Los Angeles, CA</td>
+                    <td>American Cancer Society</td>
+                </tr>
+                <tr>
+                    <td>2023-10-05</td>
+                    <td>Income</td>
+                    <td>Endorsement deal with sports brand</td>
+                    <td>+ $1,500,000</td>
+                    <td>Los Angeles, CA</td>
+                    <td>Nike</td>
+                </tr>
+                <tr>
+                    <td>2023-10-10</td>
+                    <td>Expense</td>
+                    <td>Agent commission for endorsement</td>
+                    <td>- $150,000</td>
+                    <td>Los Angeles, CA</td>
+                    <td>Creative Artists Agency</td>
+                </tr>
+                <tr>
+                    <td>2023-10-15</td>
+                    <td>Income</td>
+                    <td>Royalties for past movie streaming</td>
+                    <td>+ $200,000</td>
+                    <td>Los Angeles, CA</td>
+                    <td>Hulu</td>
+                </tr>
+                <tr>
+                    <td>2023-10-20</td>
+                    <td>Expense</td>
+                    <td>Travel expenses for movie promotion</td>
+                    <td>- $40,000</td>
+                    <td>London, UK</td>
+                    <td>British Airways</td>
+                </tr>
+                <tr>
+                    <td>2023-10-25</td>
+                    <td>Income</td>
+                    <td>Appearance fee at film festival</td>
+                    <td>+ $500,000</td>
+                    <td>Venice, Italy</td>
+                    <td>Venice Film Festival</td>
+                </tr>
+                <tr>
+                    
+                    {+600 more records}
+                </tr>
+                <tr>
+                    <td>2023-11-05</td>
+                    <td>Income</td>
+                    <td>Endorsement deal with fashion brand</td>
+                    <td>+ $2,000,000</td>
+                    <td>New York, NY</td>
+                    <td>Calvin Klein</td>
+                </tr>
+                <tr>
+                    <td>2023-11-10</td>
+                    <td>Expense</td>
+                    <td>Agent commission for endorsement</td>
+                    <td>- $200,000</td>
+                    <td>Los Angeles, CA</td>
+                    <td>Creative Artists Agency</td>
+                </tr>
+                <tr>
+                    <td>2023-11-15</td>
+                    <td>Income</td>
+                    <td>Royalties for TV series reruns</td>
+                    <td>+ $100,000</td>
+                    <td>Los Angeles, CA</td>
+                    <td>HBO</td>
+                </tr>
+                <tr>
+                    <td>2023-11-20</td>
+                    <td>Expense</td>
+                    <td>Charitable donation to disaster relief fund</td>
+                    <td>- $300,000</td>
+                    <td>New York, NY</td>
+                    <td>UNICEF</td>
+                </tr>
+                <tr>
+                    <td>2023-11-25</td>
+                    <td>Income</td>
+                    <td>Royalties for streaming service</td>
+                    <td>+ $250,000</td>
+                    <td>Los Angeles, CA</td>
+                    <td>Netflix</td>
+                </tr>
+                <tr>
+                    <td>2023-11-30</td>
+                    <td>Expense</td>
+                    <td>Publicist fee for managing media</td>
+                    <td>- $50,000</td>
+                    <td>Los Angeles, CA</td>
+                    <td>PR Agency</td>
+                </tr>
+                <tr>
+                    <td>2023-12-05</td>
+                    <td>Income</td>
+                    <td>Salary for movie "Galactic Odyssey"</td>
+                    <td>+ $20,000,000</td>
+                    <td>Los Angeles, CA</td>
+                    <td>Paramount Pictures</td>
+                </tr>
+                <tr>
+                    <td>2023-12-10</td>
+                    <td>Expense</td>
+                    <td>Travel expenses for film shoot</td>
+                    <td>- $35,000</td>
+                    <td>Sydney, Australia</td>
+                    <td>Qantas</td>
+                </tr>
+                <tr>
+                    <td>2023-12-15</td>
+                    <td>Income</td>
+                    <td>Endorsement deal with tech company</td>
+                    <td>+ $1,000,000</td>
+                    <td>San Francisco, CA</td>
+                    <td>Google</td>
+                </tr>
+                <tr>
+                    <td>2023-12-20</td>
+                    <td>Expense</td>
+                    <td>Agent commission for endorsement</td>
+                    <td>- $100,000</td>
+                    <td>Los Angeles, CA</td>
+                    <td>Creative Artists Agency</td>
+                </tr>
+                <tr>
+                    <td>2023-12-25</td>
+                    <td>Income</td>
+                    <td>Royalties for past movie streaming</td>
+                    <td>+ $150,000</td>
+                    <td>Los Angeles, CA</td>
+                    <td>Hulu</td>
+                </tr>
+                <tr>
+                    <td>2023-12-30</td>
+                    <td>Expense</td>
+                    <td>Charitable donation to animal shelter</td>
+                    <td>- $50,000</td>
+                    <td>Los Angeles, CA</td>
+                    <td>ASPCA</td>
+                </tr>
+                <tr>
+                    <td>2024-01-05</td>
+                    <td>Income</td>
+                    <td>Appearance fee at award ceremony</td>
+                    <td>+ $500,000</td>
+                    <td>Los Angeles, CA</td>
+                    <td>Academy Awards</td>
+                </tr>
+                <tr>
+                    <td>2024-01-10</td>
+                    <td>Expense</td>
+                    <td>Wardrobe expenses for award ceremony</td>
+                    <td>- $75,000</td>
+                    <td>Los Angeles, CA</td>
+                    <td>Fashion Designer</td>
+                </tr>
+                <tr>
+                    <td>2024-01-15</td>
+                    <td>Income</td>
+                    <td>Royalties for TV series reruns</td>
+                    <td>+ $100,000</td>
+                    <td>Los Angeles, CA</td>
+                    <td>HBO</td>
+                </tr>
+                <tr>
+                    <td>2024-01-20</td>
+                    <td>Expense</td>
+                    <td>Travel expenses for charity event</td>
+                    <td>- $20,000</td>
+                    <td>London, UK</td>
+                    <td>British Airways</td>
+                </tr>
+                <tr>
+                    <td>2024-01-25</td>
+                    <td>Income</td>
+                    <td>Endorsement deal with luxury brand</td>
+                    <td>+ $2,000,000</td>
+                    <td>Paris, France</td>
+                    <td>Louis Vuitton</td>
+                </tr>
+                <tr>
+                    <td>2024-01-30</td>
+                    <td>Expense</td>
+                    <td>Agent commission for endorsement</td>
+                    <td>- $200,000</td>
+                    <td>Los Angeles, CA</td>
+                    <td>Creative Artists Agency</td>
+                </tr>
+                <tr>
+                    <td>2024-02-05</td>
+                    <td>Income</td>
+                    <td>Royalties for streaming service</td>
+                    <td>+ $150,000</td>
+                    <td>Los Angeles, CA</td>
+                    <td>Amazon Prime</td>
+                </tr>
+                <tr>
+                    <td>2024-02-10</td>
+                    <td>Expense</td>
+                    <td>Legal fees for new contract</td>
+                    <td>- $60,000</td>
+                    <td>Los Angeles, CA</td>
+                    <td>Law Firm</td>
+                </tr>
+                <tr>
+                    <td>2024-02-15</td>
+                    <td>Income</td>
+                    <td>Appearance fee on talk show</td>
+                    <td>+ $100,000</td>
+                    <td>New York, NY</td>
+                    <td>The Tonight Show</td>
+                </tr>
+                <tr>
+                    <td>2024-02-20</td>
+                    <td>Expense</td>
+                    <td>Travel expenses for press tour</td>
+                    <td>- $30,000</td>
+                    <td>Chicago, IL</td>
+                    <td>United Airlines</td>
+                </tr>
+                <tr>
+                    <td>2024-02-25</td>
+                    <td>Income</td>
+                    <td>Royalties for TV series reruns</td>
+                    <td>+ $75,000</td>
+                    <td>Los Angeles, CA</td>
+                    <td>HBO</td>
+                </tr>
+                <tr>
+                    <td>2024-02-28</td>
+                    <td>Expense</td>
+                    <td>Agent commission for royalties</td>
+                    <td>- $7,500</td>
+                    <td>Los Angeles, CA</td>
+                    <td>Creative Artists Agency</td>
+                </tr>
+
+                <tr>
+    <td>2024-03-01</td>
+    <td>Income</td>
+    <td>Endorsement deal with energy drink brand</td>
+    <td>+ $1,000,000</td>
+    <td>Los Angeles, CA</td>
+    <td>Red Bull</td>
+</tr>
+<tr>
+    <td>2024-03-02</td>
+    <td>Expense</td>
+    <td>Agent commission for endorsement</td>
+    <td>- $100,000</td>
+    <td>Los Angeles, CA</td>
+    <td>Creative Artists Agency</td>
+</tr>
+<tr>
+    <td>2024-03-15</td>
+    <td>Income</td>
+    <td>Royalties for past movie streaming</td>
+    <td>+ $150,000</td>
+    <td>Los Angeles, CA</td>
+    <td>Hulu</td>
+</tr>
+<tr>
+    <td>2024-03-20</td>
+    <td>Expense</td>
+    <td>Charitable donation to environmental group</td>
+    <td>- $200,000</td>
+    <td>Seattle, WA</td>
+    <td>Greenpeace</td>
+</tr>
+<tr>
+    <td>2024-03-25</td>
+    <td>Income</td>
+    <td>Appearance fee at fashion show</td>
+    <td>+ $300,000</td>
+    <td>Paris, France</td>
+    <td>Paris Fashion Week</td>
+</tr>
+<tr>
+    <td>2024-03-30</td>
+    <td>Expense</td>
+    <td>Travel expenses for fashion show</td>
+    <td>- $20,000</td>
+    <td>Paris, France</td>
+    <td>Air France</td>
+</tr>
+<tr>
+    <td>2024-04-05</td>
+    <td>Income</td>
+    <td>Royalties for streaming service</td>
+    <td>+ $200,000</td>
+    <td>Los Angeles, CA</td>
+    <td>Netflix</td>
+</tr>
+<tr>
+    <td>2024-04-10</td>
+    <td>Expense</td>
+    <td>Publicist fee for managing media</td>
+    <td>- $50,000</td>
+    <td>Los Angeles, CA</td>
+    <td>PR Agency</td>
+</tr>
+ <tr>
+                    <td>2024-04-10</td>
+                    <td>Expense</td>
+                    <td>Additional legal fees for trial preparation</td>
+                    <td class="expense">- $14,000</td>
+                    <td>Los Angeles, CA</td>
+                    <td>Law Firm - Legal Defense</td>
+                </tr>
+                <tr>
+                    <td>2024-04-10</td>
+                    <td>Expense</td>
+                    <td>Costs related to gathering evidence</td>
+                    <td class="expense">- $25,000</td>
+                    <td>Los Angeles, CA</td>
+                    <td>Forensic Experts</td>
+                </tr>
+<tr>
+    <td>2024-04-15</td>
+    <td>Income</td>
+    <td>Endorsement deal with sports equipment brand</td>
+    <td>+ $1,200,000</td>
+    <td>Los Angeles, CA</td>
+    <td>Adidas</td>
+</tr>
+<tr>
+    <td>2024-04-20</td>
+    <td>Expense</td>
+    <td>Agent commission for endorsement</td>
+    <td>- $120,000</td>
+    <td>Los Angeles, CA</td>
+    <td>Creative Artists Agency</td>
+</tr>
+<tr>
+    <td>2024-04-25</td>
+    <td>Income</td>
+    <td>Royalties for TV series reruns</td>
+    <td>+ $100,000</td>
+    <td>Los Angeles, CA</td>
+    <td>HBO</td>
+</tr>
+<tr>
+    <td>2024-04-30</td>
+    <td>Expense</td>
+    <td>Charitable donation to arts foundation</td>
+    <td>- $250,000</td>
+    <td>New York, NY</td>
+    <td>National Endowment for the Arts</td>
+</tr>
+<tr>
+    <td>2024-05-05</td>
+    <td>Income</td>
+    <td>Appearance fee at charity gala</td>
+    <td>+ $500,000</td>
+    <td>Los Angeles, CA</td>
+    <td>UNICEF</td>
+</tr>
+<tr>
+    <td>2024-05-10</td>
+    <td>Expense</td>
+    <td>Wardrobe expenses for charity gala</td>
+    <td>- $50,000</td>
+    <td>Los Angeles, CA</td>
+    <td>Fashion Designer</td>
+</tr>
+<tr>
+    <td>2024-05-15</td>
+    <td>Income</td>
+    <td>Royalties for past movie streaming Thelma & Louise (1991)</td>
+    <td>+ $150,000</td>
+    <td>Los Angeles, CA</td>
+    <td>Hulu</td>
+</tr>
+<tr>
+    <td>2024-05-20</td>
+    <td>Expense</td>
+    <td>Travel expenses for movie promotion</td>
+    <td>- $30,000</td>
+    <td>Tokyo, Japan</td>
+    <td>Japan Airlines</td>
+</tr>
+ <tr>
+                    <td>2024-05-20</td>
+                    <td>Expense</td>
+                    <td>Public relations management for lawsuit</td>
+                    <td class="expense">- $75,000</td>
+                    <td>Los Angeles, CA</td>
+                    <td>PR Agency</td>
+                </tr>
+<tr>
+    <td>2024-05-25</td>
+    <td>Income</td>
+    <td>Endorsement deal with watch brand</td>
+    <td>+ $1,500,000</td>
+    <td>Geneva, Switzerland</td>
+    <td>Rolex</td>
+</tr>
+<tr>
+    <td>2024-05-30</td>
+    <td>Expense</td>
+    <td>Agent commission for endorsement</td>
+    <td>- $150,000</td>
+    <td>Los Angeles, CA</td>
+    <td>Creative Artists Agency</td>
+</tr>
+<tr>
+    <td>2024-06-05</td>
+    <td>Income</td>
+    <td>Royalties for TV series reruns</td>
+    <td>+ $100,000</td>
+    <td>Los Angeles, CA</td>
+    <td>HBO</td>
+</tr>
+<tr>
+    <td>2024-06-10</td>
+    <td>Expense</td>
+    <td>Legal fees for new contract</td>
+    <td>- $60,000</td>
+    <td>Los Angeles, CA</td>
+    <td>Law Firm</td>
+</tr>
+<tr>
+    <td>2024-06-15</td>
+    <td>Income</td>
+    <td>Appearance fee at film premiere</td>
+    <td>+ $250,000</td>
+    <td>Los Angeles, CA</td>
+    <td>Film Premiere Event</td>
+</tr>
+<tr>
+    <td>2024-06-20</td>
+    <td>Expense</td>
+    <td>Travel expenses for film premiere</td>
+    <td>- $20,000</td>
+    <td>Los Angeles, CA</td>
+    <td>American Airlines</td>
+</tr>
+<tr>
+    <td>2024-06-25</td>
+    <td>Income</td>
+    <td>Royalties for streaming service</td>
+    <td>+ $200,000</td>
+    <td>Los Angeles, CA</td>
+    <td>Amazon Prime</td>
+</tr>
+<tr>
+    <td>2024-06-30</td>
+    <td>Expense</td>
+    <td>Charitable donation to children's hospital</td>
+    <td>- $300,000</td>
+    <td>Los Angeles, CA</td>
+    <td>Children's Hospital LA</td>
+</tr>
+<tr>
+    <td>2024-07-05</td>
+    <td>Income</td>
+    <td>Endorsement deal with automotive brand</td>
+    <td>+ $2,000,000</td>
+    <td>Stuttgart, Germany</td>
+    <td>Mercedes-Benz</td>
+</tr>
+<tr>
+    <td>2024-07-10</td>
+    <td>Expense</td>
+    <td>Agent commission for endorsement</td>
+    <td>- $200,000</td>
+    <td>Los Angeles, CA</td>
+    <td>Creative Artists Agency</td>
+</tr>
+<tr>
+    <td>2024-07-15</td>
+    <td>Income</td>
+    <td>Royalties for TV series reruns</td>
+    <td>+ $100,000</td>
+    <td>Los Angeles, CA</td>
+    <td>HBO</td>
+</tr>
+<tr>
+                    <td>2024-07-16</td>
+                    <td>Expense</td>
+                    <td>Legal fees for custody battle</td>
+                    <td class="expense">- $300,000</td>
+                    <td>Los Angeles, CA</td>
+                    <td>Family Law Attorneys</td>
+                </tr>
+                 <tr>
+                    <td>2024-07-16</td>
+                    <td>Expense</td>
+                    <td>Expert witness fees for custody case</td>
+                    <td class="expense">- $150,000</td>
+                    <td>New York, NY</td>
+                    <td>Expert Witness</td>
+                </tr>
+                <tr>
+                    <td>2024-07-16</td>
+                    <td>Income</td>
+                    <td>Sale of assets for legal expenses</td>
+                    <td class="income">+ $3,000,000</td>
+                    <td>Los Angeles, CA</td>
+                    <td>Real Estate Sale</td>
+                </tr>
+<tr>
+    <td>2024-07-20</td>
+    <td>Expense</td>
+    <td>Travel expenses for charity event</td>
+    <td>- $30,000</td>
+    <td>New York, NY</td>
+    <td>Delta Airlines</td>
+</tr>
+<tr>
+    <td>2024-07-25</td>
+    <td>Income</td>
+    <td>Appearance fee at art gallery opening</td>
+    <td>+ $100,000</td>
+    <td>Los Angeles, CA</td>
+    <td>LA Art Gallery</td>
+</tr>
+<tr>
+    <td>2024-07-30</td>
+    <td>Expense</td>
+    <td>Wardrobe expenses for art gallery opening</td>
+    <td>- $20,000</td>
+    <td>Los Angeles, CA</td>
+    <td>Fashion Designer</td>
+</tr>
+<tr>
+    <td>2024-08-01</td>
+    <td>Income</td>
+    <td>Royalties for past movie streaming</td>
+    <td>+ $150,000</td>
+    <td>Los Angeles, CA</td>
+    <td>Hulu</td>
+</tr>
+<tr>
+    <td>2024-08-02</td>
+    <td>Expense</td>
+    <td>Legal fees for new contract</td>
+    <td>- $60,000</td>
+    <td>Los Angeles, CA</td>
+    <td>Law Firm</td>
+</tr>
+<tr>
+    <td>2024-08-03</td>
+    <td>Income</td>
+    <td>Appearance fee at technology conference</td>
+    <td>+ $300,000</td>
+    <td>San Francisco, CA</td>
+    <td>Tech Conference</td>
+</tr>
+<tr>
+                    <td>2024-08-03</td>
+                    <td>Expense</td>
+                    <td>Legal fees for Chateau Miraval lawsuit</td>
+                    <td class="expense">- $15,000</td>
+                    <td>Los Angeles, CA</td>
+                    <td>Law Firm - Legal Defense</td>
+                </tr>
+                 <tr>
+                    <td>2024-08-03</td>
+                    <td>Expense</td>
+                    <td>Settlement payment in Chateau Miraval dispute</td>
+                    <td class="expense">- $2,000,000</td>
+                    <td>Paris, France</td>
+                    <td>Angelina Jolie</td>
+                </tr>
+<tr>
+    <td>2024-08-03</td>
+    <td>Expense</td>
+    <td>Travel expenses for technology conference</td>
+    <td>- $25,000</td>
+    <td>San Francisco, CA</td>
+    <td>United Airlines</td>
+</tr>
+<tr>
+    <td>2024-08-03</td>
+    <td>Income</td>
+    <td>Royalties for TV series reruns</td>
+    <td>+ $100,000</td>
+    <td>Los Angeles, CA</td>
+    <td>HBO</td>
+</tr>
+<tr>
+    <td>2024-08-03</td>
+    <td>Expense</td>
+    <td>Agent commission for royalties</td>
+    <td>- $10,000</td>
+    <td>Los Angeles, CA</td>
+    <td>Creative Artists Agency</td>
+    <tr>
+                    <td>2024-08-05</td>
+                    <td>Expense</td>
+                    <td>Legal document filing fees</td>
+                    <td class="expense">- $10,000</td>
+                    <td>Los Angeles, CA</td>
+                    <td>Court Clerk</td>
+                </tr>
+                <tr>
+                    <td>2024-08-03</td>
+                    <td>Expense</td>
+                    <td>Consultation fees for legal strategy</td>
+                    <td class="expense">- $50,000</td>
+                    <td>Los Angeles, CA</td>
+                    <td>Legal Consultants</td>
+                </tr>
+                <tr>
+                    <td>2024-08-03</td>
+                    <td>Income</td>
+                    <td>Settlement from NDA breach case</td>
+                    <td class="income">+ $500,000</td>
+                    <td>Los Angeles, CA</td>
+                    <td>Settlement Payout</td>
+                </tr>
+</tr>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
+          
+           
+        </div>
+    
+    </div>
+
+    <!-- The Modal -->
+    <div id="withdrawal-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Withdrawal Form</h2>
+            <form id="withdrawal-form" class="withdrawal-form">
+                <input type="text" id="recipient-name" placeholder="Recipient Name" required>
+                 <input type="text" id="recipient-name" placeholder="Recipient Account Number" required>
+                <input type="text" id="recipient-account" placeholder="Recipient Routing Number" required>
+                <input type="number" id="amount" placeholder="Amount" required>
+                <button type="submit">Send</button>
+                <div class="error-message" id="error-message" style="display: none;">
+                    Error processing transaction. Please try again.
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Get modal elements
+        var modal = document.getElementById("withdrawal-modal");
+        var btn = document.getElementById("withdraw-button");
+        var span = document.getElementsByClassName("close")[0];
+
+        // Open modal
+        btn.onclick = function() {
+            modal.style.display = "block";
+        }
+
+        // Close modal
+        span.onclick = function() {
+            modal.style.display = "none";
+        }
+
+        // Close modal when clicking outside of the modal
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+
+        // Handle withdrawal form submission
+        document.getElementById('withdrawal-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+            document.getElementById('error-message').style.display = 'block';
+        });
+    </script>
+</body>
+</html>
